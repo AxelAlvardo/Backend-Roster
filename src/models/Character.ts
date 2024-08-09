@@ -10,6 +10,9 @@ export type CharacterType = Document & {
     weight: number
     description: string
     actorOrVoice: string
+    mediaTitle: string
+    movieActor?: string
+    bookAuthor?: string
 }
 
 const CharacterSchema : Schema = new Schema({
@@ -21,7 +24,10 @@ const CharacterSchema : Schema = new Schema({
     height: { type: Number, required: true },
     weight: { type: Number, required: true },
     description: { type: String, required: true },
-    actorOrVoice: { type: String, required: true }
+    actorOrVoice: { type: String, required: true },
+    mediaTitle: { type: String, required: true },
+    movieActor: { type: String },
+    bookAuthor: { type: String },
 })
 
 const Character = mongoose.model<CharacterType>('Character', CharacterSchema);
