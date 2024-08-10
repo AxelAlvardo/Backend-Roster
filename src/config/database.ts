@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import color from 'colors'
 import {exit} from 'node:process'
 
+
 export const connectDB = async()=> {
     try {
 
