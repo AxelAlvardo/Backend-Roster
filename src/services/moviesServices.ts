@@ -1,6 +1,5 @@
 import Character from "../models/Character";
 
-
 export const getMoviesWithCharacters = async () => {
     const movies = [
         'El Señor de los Anillos',
