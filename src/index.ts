@@ -1,5 +1,9 @@
 import server from './server';
 import color from 'colors'
+import './expressPotions'
+import dotenv from 'dotenv';    
+
+dotenv.config();
 
 const port = process.env.PORT || 4000;
 

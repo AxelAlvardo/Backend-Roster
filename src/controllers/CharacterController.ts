@@ -3,27 +3,37 @@ import Character from '../models/Character';
 import Movie from '../models/Movie';
 import Serie from '../models/Series';
 import Book from '../models/Book';
+import cloudinary from '../utils/cloudinaryTools';
 
 export class CharacterController {
 
     static createCharacter = async (req: Request, res: Response) => {
         const characterData = req.body;
+
         
         if (characterData.mediaType === 'Película') {
             const movieExists = await Movie.findOne({ title: characterData.mediaTitle }).exec();
             if (!movieExists) {
-                return res.status(404).json({ message: 'La película con el título especificado no existe' });
+                return res.status(404).json({ message: 'La media con el título especificado no existe' });
+            }
+        }
+
+        if (req.file) {
+            try {
+                const result = await cloudinary.uploader.upload(req.file.path);
+                characterData.image = result.secure_url;
+            } catch (error) {
+                console.error('Error al subir la imagen a Cloudinary:', error);
+                return res.status(500).json({ message: 'Error al subir la imagen', error });
             }
         }
 
         const character = new Character(characterData);
 
         try {
-
             const savedCharacter = await character.save();
 
             if (characterData.mediaType === 'Película') {
-
                 await Movie.findOneAndUpdate(
                     { title: characterData.mediaTitle },
                     { $addToSet: { characters: savedCharacter._id } }
@@ -49,7 +59,7 @@ export class CharacterController {
             console.error(error);
             res.status(500).json({ message: 'Error al crear el personaje', error });
         }
-    }
+    };
 
     static getAllCharacters = async (req: Request, res: Response) => {
         try {

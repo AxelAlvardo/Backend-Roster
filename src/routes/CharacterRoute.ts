@@ -2,10 +2,15 @@ import { Router } from 'express'
 import { CharacterController } from '../controllers/CharacterController';
 import { param } from 'express-validator'
 import { handleInputErrors } from '../middleware/validations';
+import uploadFile from '../middleware/multer';
+import upload from '../middleware/multer';
 
 const router = Router();
 
-router.post('/', CharacterController.createCharacter)
+
+router.post('/', 
+    upload.single('image'),
+    CharacterController.createCharacter)
 
 router.get('/', CharacterController.getAllCharacters)
 

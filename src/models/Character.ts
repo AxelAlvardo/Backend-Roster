@@ -1,6 +1,7 @@
 import mongoose, {Schema, Document} from "mongoose";
 
 export type CharacterType = Document & {
+    image: string,
     firstName: string
     lastName: string
     age: number;
@@ -17,6 +18,7 @@ export type CharacterType = Document & {
 }
 
 const CharacterSchema : Schema = new Schema({
+    image: {type: String, require: true},
     firstName: { type: String, required: true },
     lastName: { type: String, required: false },
     age: { type: Number, required: true },
