@@ -1,5 +1,4 @@
 import type { Request, Response } from 'express'
-import { getMoviesWithCharacters } from '../services/moviesServices';
 import Character from '../models/Character';
 import Movie from '../models/Movie';
 

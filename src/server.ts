@@ -1,5 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
+import cors from 'cors'
+import { corsConfig } from './config/cors';
 import { connectDB } from './config/database';
 import characterRoutes from './routes/CharacterRoute'
 import moviesRoutes from './routes/MoviesRouter'
@@ -11,6 +13,7 @@ dotenv.config();
 connectDB();
 
 const server = express();
+server.use(cors(corsConfig));
 server.use(express.json());
 
 //Routes
