@@ -2,6 +2,7 @@ import type { Request, Response } from 'express'
 import Character from '../models/Character';
 import Movie from '../models/Movie';
 import Serie from '../models/Series';
+import Book from '../models/Book';
 
 export class CharacterController {
 
@@ -31,6 +32,13 @@ export class CharacterController {
 
             if (characterData.mediaType === 'Serie') {
                 await Serie.findOneAndUpdate(
+                    { title: characterData.mediaTitle },
+                    { $addToSet: { characters: savedCharacter._id } }
+                );
+            }
+
+            if (characterData.mediaType === 'Libro') {
+                await Book.findOneAndUpdate(
                     { title: characterData.mediaTitle },
                     { $addToSet: { characters: savedCharacter._id } }
                 );

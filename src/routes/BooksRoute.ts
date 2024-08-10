@@ -4,6 +4,7 @@ import { BooksController } from "../controllers/BooksController";
 
 const router = Router();
 
+router.post('/', BooksController.createBook);
 router.get('/', BooksController.getAllBooks);
 
 export default router;
