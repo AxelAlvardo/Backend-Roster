@@ -4,6 +4,7 @@ import { connectDB } from './config/database';
 import characterRoutes from './routes/CharacterRoute'
 import moviesRoutes from './routes/MoviesRouter'
 import seriesRoutes from './routes/SeriesRoutes'
+import booksRoutes from './routes/BooksRoute'
 
 dotenv.config();
 
@@ -16,5 +17,6 @@ server.use(express.json());
 server.use('/api/characters', characterRoutes);
 server.use('/api/movies', moviesRoutes)
 server.use('/api/series', seriesRoutes)
+server.use('/api/books', booksRoutes)
 
 export default server;
