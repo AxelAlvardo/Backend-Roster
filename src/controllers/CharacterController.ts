@@ -1,30 +1,42 @@
 import type { Request, Response } from 'express'
 import Character from '../models/Character';
 import Movie from '../models/Movie';
+import Serie from '../models/Series';
 
 export class CharacterController {
 
     static createCharacter = async (req: Request, res: Response) => {
-
         const characterData = req.body;
+        
+        if (characterData.mediaType === 'Película') {
+            const movieExists = await Movie.findOne({ title: characterData.mediaTitle }).exec();
+            if (!movieExists) {
+                return res.status(404).json({ message: 'La película con el título especificado no existe' });
+            }
+        }
 
         const character = new Character(characterData);
 
         try {
+
             const savedCharacter = await character.save();
 
-
             if (characterData.mediaType === 'Película') {
-                const updatedMovies = await Movie.updateMany(
+
+                await Movie.findOneAndUpdate(
+                    { title: characterData.mediaTitle },
                     { $addToSet: { characters: savedCharacter._id } }
                 );
-
-                if (updatedMovies.matchedCount === 0) {
-                    return res.status(404).json({ message: 'No se encontraron películas con ese título' });
-                }
             }
 
-            res.status(201).json({ message: 'Personaje creado correctamente' });
+            if (characterData.mediaType === 'Serie') {
+                await Serie.findOneAndUpdate(
+                    { title: characterData.mediaTitle },
+                    { $addToSet: { characters: savedCharacter._id } }
+                );
+            }
+
+            res.status(201).json({ message: 'Personaje creado correctamente', character: savedCharacter });
         } catch (error) {
             console.error(error);
             res.status(500).json({ message: 'Error al crear el personaje', error });
