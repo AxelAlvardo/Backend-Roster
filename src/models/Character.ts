@@ -11,13 +11,14 @@ export type CharacterType = Document & {
     description: string
     actorOrVoice: string
     mediaTitle: string
+    mediaType: 'Libro' | 'Película' | 'Serie'
     movieActor?: string
     bookAuthor?: string
 }
 
 const CharacterSchema : Schema = new Schema({
     firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
+    lastName: { type: String, required: false },
     age: { type: Number, required: true },
     sex: { type: String, enum: ['Hombre', 'Mujer', 'Otro'], required: true },
     gender: { type: String, required: true },
@@ -26,6 +27,7 @@ const CharacterSchema : Schema = new Schema({
     description: { type: String, required: true },
     actorOrVoice: { type: String, required: true },
     mediaTitle: { type: String, required: true },
+    mediaType: { type: String, enum: ['Libro', 'Película', 'Serie'], required: true },
     movieActor: { type: String },
     bookAuthor: { type: String },
 })
