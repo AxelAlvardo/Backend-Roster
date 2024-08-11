@@ -5,9 +5,10 @@ import Movie from '../models/Movie';
 export class MovieController {
 
     static createMovie = async (req: Request, res: Response) => {
-        const { title, imageURL } = req.body;
+        const {access, title, imageURL} = req.body;
 
         const movie = new Movie({
+            access,
             title,
             imageURL,
             characters: []
@@ -30,6 +31,22 @@ export class MovieController {
             res.status(200).json(movies);
         } catch (error) {
             res.status(500).json({ message: 'Error al obtener las películas', error });
+        }
+    }
+
+    static getMovieById = async (req: Request, res: Response) => {
+        const { id } = req.params;
+        
+        try {
+            const movie = await Movie.findById(id).populate('characters').exec();
+
+            if (!movie) {
+                return res.status(404).json({ message: 'Película no encontrada' });
+            }
+
+            res.status(200).json(movie);
+        } catch (error) {
+            res.status(500).json({ message: 'Error al obtener la película', error });
         }
     }
 }

@@ -4,9 +4,10 @@ import Book from '../models/Book';
 export class BooksController {
 
     static createBook = async(req: Request, res: Response)=> {
-        const { title, imageURL } = req.body;
+        const {access, title, imageURL} = req.body;
 
         const book = new Book({
+            access,
             title,
             imageURL,
             characters: []
@@ -29,6 +30,22 @@ export class BooksController {
             res.status(200).json(books);
         } catch (error) {
             res.status(500).json({ message: 'Error al obtener las películas', error });
+        }
+    }
+
+    static getBookById = async (req: Request, res: Response) => {
+        const { id } = req.params;
+        
+        try {
+            const book = await Book.findById(id).populate('characters').exec();
+
+            if (!book) {
+                return res.status(404).json({ message: 'Serie no encontrada' });
+            }
+
+            res.status(200).json(book);
+        } catch (error) {
+            res.status(500).json({ message: 'Error al obtener la serie', error });
         }
     }
 }
